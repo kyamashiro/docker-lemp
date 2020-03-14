@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 
 RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
@@ -27,5 +27,4 @@ RUN wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > install
 # mysql driver
 RUN docker-php-ext-install pdo_mysql
 
-RUN usermod -u 1000 www-data
-RUN chown -R www-data:www-data /var/www
+RUN usermod -u 1000 www-data && chown -R www-data:www-data /var/www
