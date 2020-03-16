@@ -11,6 +11,7 @@ RUN apt update -yqq && apt install -yqq \
     zip \
     unzip \
     vim \
+    cron \
     default-mysql-server \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -26,5 +27,10 @@ RUN wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > install
 
 # mysql driver
 RUN docker-php-ext-install pdo_mysql
+
+# cron
+ADD ./cron.d /etc/cron.d
+RUN touch /var/log/cron.log && chmod 0644 /etc/cron.d/*
+CMD cron && docker-php-entrypoint php-fpm
 
 RUN usermod -u 1000 www-data && chown -R www-data:www-data /var/www

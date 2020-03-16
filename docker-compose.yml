@@ -5,6 +5,8 @@ services:
   php-fpm:
     build: ./php
     container_name: php-fpm
+    environment:
+      TZ: Asia/Tokyo
     volumes:
       - ./workspace:/var/www/html
       - ./php/php.ini:/usr/local/etc/php/php.ini
