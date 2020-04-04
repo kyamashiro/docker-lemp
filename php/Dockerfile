@@ -26,7 +26,8 @@ RUN wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > install
     && composer global require hirak/prestissimo
 
 # mysql driver
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-configure opcache --enable-opcache \
+    && docker-php-ext-install pdo_mysql opcache
 
 # cron
 ADD ./cron.d /etc/cron.d
