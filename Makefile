@@ -1,22 +1,30 @@
 start:
-	docker-compose up -d
-
-build:
-	docker-compose -f "docker-compose.yml" up -d --build
+	docker compose up -d
 
 stop:
-	docker-compose stop
+	docker compose stop
 
 restart:
-	docker-compose stop
-	docker-compose up -d
+	@make stop
+	@make start
+
+build:
+	docker compose up -d --build
+
+rebuild:
+	docker compose build --no-cache --force-rm
 
 remove:
-	docker-compose stop
-	docker-compose rm
+	docker compose rm -s -v
 
 bash:
-	docker exec -u www-data -it php-fpm bash
+	docker exec -it --user 1000 php-fpm bash
 
 mysql:
-	docker exec -it mysql bash
+	docker exec -it mysql bash -c 'mysql -u root -p$$MYSQL_ROOT_PASSWORD'
+
+web:
+	docker exec -it nginx bash
+
+logs:
+	docker compose logs -f
